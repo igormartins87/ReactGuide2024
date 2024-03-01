@@ -1,6 +1,4 @@
 
-
-
 export default function CoreConcept({img,titulo,descricao}){
     return (
       <li>
