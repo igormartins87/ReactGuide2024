@@ -23,27 +23,19 @@ function App() {
         <section id="core-concepts">
           <h2>Core Concepts</h2>
           <ul>
-            <CoreConcept
-              titulo={CORE_CONCEPTS[0].titulo}
-              descricao={CORE_CONCEPTS[0].descricao}
-              img={CORE_CONCEPTS[0].image}
-              CORE_CONCEPTS
-              {...CORE_CONCEPTS[1]}
-            />
-            <CoreConcept {...CORE_CONCEPTS[1]} />
-            <CoreConcept {...CORE_CONCEPTS[2]} />
-            <CoreConcept {...CORE_CONCEPTS[3]} />
+
+          {CORE_CONCEPTS.map((conceptItem) => <CoreConcept key={conceptItem.id} {...conceptItem} />)}
           </ul>
         </section>
         <section id="examples">
           <h2>Exemplos</h2>
           <menu>
-            <TabButton onSelect={() => handleSelect("Components")}>
+            <TabButton isSelect={selectTopic ==='Components'} onSelect={() => handleSelect("Components")}>
               Componentes
             </TabButton>
-            <TabButton onSelect={() => handleSelect("Jsx")}>Jsx</TabButton>
-            <TabButton onSelect={() => handleSelect("props")}>props</TabButton>
-            <TabButton onSelect={() => handleSelect("states")}>
+            <TabButton isSelect={selectTopic === 'Jsx'} onSelect={() => handleSelect("Jsx")}>Jsx</TabButton>
+            <TabButton isSelect={selectTopic==='props'} onSelect={() => handleSelect("props")}>props</TabButton>
+            <TabButton isSelect={selectTopic ==='states'}onSelect={() => handleSelect("states")}>
               states
             </TabButton>
           </menu>

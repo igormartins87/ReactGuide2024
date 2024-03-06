@@ -7,7 +7,7 @@ export const CORE_CONCEPTS = [
   {
     img: componentsImg,
     titulo: "Components",
-    descricao: "teste 1",
+    descricao: "teste 111111111111111111133223",
   },
   {
     img: jsxImg,
