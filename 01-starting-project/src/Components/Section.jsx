@@ -1,9 +1,9 @@
 export default function Section ({titulo,children ,...props}){
     return (
-        <Section {...props}>
+        <section {...props}>
             <h2>{titulo}</h2>
             {children}
-        </Section>
+        </section>
     )
 
 }
