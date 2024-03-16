@@ -16,8 +16,7 @@ export default function Examples(){
     }
   
     return (
-        <Section titulo="Examples" id="examples">
-        <h2>Exemplos</h2>
+        <Section titulo="Exemplo" id="examples">
         <menu>
           <TabButton isSelect={selectTopic ==='Components'} onClick={() => handleSelect("Components")}>
             Componentes
