@@ -19,10 +19,9 @@ function genRandomInt(max) {
   return (
     <header>
       <img src= {Reactimg} alt="Stylized atom" />
-      <h1>React Essentials</h1>
+      <h1>Igor Martins de Almeida </h1>
       <p>
-        {descricao} React concepts you will need for almost any app you are
-        going to build!
+        {descricao}  meu Primeiro portifólio de React !
       </p>
     </header>
   );
