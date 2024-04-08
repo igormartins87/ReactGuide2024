@@ -51,7 +51,7 @@ function App() {
   }
 
 
-  const empate = gameTurns.length === 9 && !Vencedor
+  const empate = gameTurns.length === 9 && !Vencedor;
 
 
 
@@ -81,10 +81,20 @@ function App() {
       </header>
       <div id="game-container">
         <ol id="players" className="highlight-player">
-          <Player initialName="Jogador 1" symbol="X" isActive={activePlayer === "X"} />
-          <Player initialName="Jogador 2" symbol="0" isActive={activePlayer === "O"} />
+          <Player
+            initialName="Jogador 1"
+            symbol="X"
+            isActive={activePlayer === "X"}
+          />
+          <Player
+            initialName="Jogador 2"
+            symbol="0"
+            isActive={activePlayer === "O"}
+          />
         </ol>
-        {(Vencedor || empate)  && <GameOver Vencedor={Vencedor} onRestart={handleRestart} />}
+        {(Vencedor || empate) && (
+          <GameOver vencedor={Vencedor} onRestart={handleRestart} />
+        )}
         <GameBoard onSelectSquare={handleSelectSquare} board={board} />
       </div>
       <Log turns={gameTurns} />
