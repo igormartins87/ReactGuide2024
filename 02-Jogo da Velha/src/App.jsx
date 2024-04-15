@@ -85,7 +85,7 @@ function App() {
     setPlayers(prevPlayers => {
       return{
         ...prevPlayers,
-        ['symbol'] : newName
+        [symbol] : newName
       };
     });
   }
