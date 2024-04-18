@@ -6,13 +6,11 @@ import Log from "./Componentes/Log";
 import GameOver from "./Componentes/GameOver";
 import { WINNING_COMBINATIONS } from "./Componentes/Combinacoes";
 
-
 const inicialGameBoard = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
-
 
 function deriveActivePlayer(gameTurns) {
   let currentPlayer = "X";
@@ -25,67 +23,66 @@ function deriveActivePlayer(gameTurns) {
 }
 
 function App() {
-
-  const [players , setPlayers ] = useState ({
-    'X' : 'Jogador  1',
-    'O' :  'Jogador 2'
-  })
-
+  const [players, setPlayers] = useState({
+    X: "Jogador 1",
+    O: "Jogador 2",
+  });
 
   const [gameTurns, setGameTurns] = useState([]);
   const activePlayer = deriveActivePlayer(gameTurns);
 
-  let board = [...inicialGameBoard .map(array => [...array])];
+  let board = [...inicialGameBoard.map((array) => [...array])];
 
-  for(const turn of gameTurns){
-    const {square, player} = turn;
-    const {row, col} = square;
+  for (const turn of gameTurns) {
+    const { square, player } = turn;
+    const { row, col } = square;
 
-    board[row][col]=player
-
+    board[row][col] = player;
   }
 
-  let Vencedor ;
+  let Vencedor;
 
-  for(const Combinacoes of WINNING_COMBINATIONS){
-    const PrimeiraSaqureSymbol = board[Combinacoes[0].row][Combinacoes[0].column];
-    const SegundaSaqureSymbol = board[Combinacoes[1].row][Combinacoes[1].column];
-    const TerceiraSaqureSymbol = board[Combinacoes[2].row][Combinacoes[2].column];
+  for (const Combinacoes of WINNING_COMBINATIONS) {
+    const PrimeiraSaqureSymbol =
+      board[Combinacoes[0].row][Combinacoes[0].column];
+    const SegundaSaqureSymbol =
+      board[Combinacoes[1].row][Combinacoes[1].column];
+    const TerceiraSaqureSymbol =
+      board[Combinacoes[2].row][Combinacoes[2].column];
 
-    if(PrimeiraSaqureSymbol && PrimeiraSaqureSymbol === SegundaSaqureSymbol && PrimeiraSaqureSymbol === TerceiraSaqureSymbol){
-      Vencedor = PrimeiraSaqureSymbol
+    if (
+      PrimeiraSaqureSymbol &&
+      PrimeiraSaqureSymbol === SegundaSaqureSymbol &&
+      PrimeiraSaqureSymbol === TerceiraSaqureSymbol
+    ) {
+      Vencedor = players[PrimeiraSaqureSymbol];
     }
   }
 
-
   const empate = gameTurns.length === 9 && !Vencedor;
-
-
 
   function handleSelectSquare(rowIndex, colIndex) {
     setGameTurns((prevTurns) => {
       const currentPlayer = deriveActivePlayer(prevTurns);
 
-
-
-
-      const updatedTurns = [{ square: { row: rowIndex, col: colIndex }, player: currentPlayer }, ...prevTurns];
+      const updatedTurns = [
+        { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
+        ...prevTurns,
+      ];
 
       return updatedTurns;
     });
   }
 
-
-  function handleRestart(){
+  function handleRestart() {
     setGameTurns([]);
-  } 
+  }
 
-
-  function handlePlayerNameChange(symbol, newName){
-    setPlayers(prevPlayers => {
-      return{
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayers((prevPlayers) => {
+      return {
         ...prevPlayers,
-        [symbol] : newName
+        [symbol]: newName,
       };
     });
   }
@@ -102,11 +99,13 @@ function App() {
             initialName="Jogador 1"
             symbol="X"
             isActive={activePlayer === "X"}
+            onChangeName={handlePlayerNameChange}
           />
           <Player
             initialName="Jogador 2"
             symbol="0"
             isActive={activePlayer === "O"}
+            onChangeName={handlePlayerNameChange}
           />
         </ol>
         {(Vencedor || empate) && (
