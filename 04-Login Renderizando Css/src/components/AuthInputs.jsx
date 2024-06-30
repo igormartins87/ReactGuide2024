@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
-
+//
 const ControlContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -97,7 +97,7 @@ export default function AuthInputs() {
               handleInputChange('password', event.target.value)
             }
           />
-        </p>
+        </p> 
       </ControlContainer>
       <div className="actions">
         <Button type="button" className="text-button">
