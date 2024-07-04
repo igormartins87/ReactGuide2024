@@ -1,9 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [],
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}', // Adicione os caminhos para seus arquivos JS/TS/JSX/TSX
+  ],
   theme: {
-    extend: {},
+    extend: {fontFamily:{
+      title : ['"Pacifico"', 'cursive']
+    }},
   },
   plugins: [],
 }
-
