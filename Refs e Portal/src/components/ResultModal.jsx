@@ -1,35 +1,35 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from "react";
 
+const ResultModal = forwardRef(function ResultModal({ tempoAlvo, remainingTime }, ref) {
+  const dialog = useRef();
 
-const ResultModal = forwardRef (function ResultModal({ result, tempoAlvo }, ref) {
+  const userLost = remainingTime <= 0;
+  const fomatarTempoCorrendo = (remainingTime / 1000).toFixed(2);
 
-    const dialog = useRef(); 
-
-
-    useImperativeHandle(ref,()=>{
-        return{
-            open(){
-                dialog.current.showModal();
-            }
-        }
-    });
+  useImperativeHandle(ref, () => ({
+    open() {
+      dialog.current.showModal();
+    },
+    close() {
+      dialog.current.close();
+    },
+  }));
 
   return (
-    <dialog ref={ref} className="result-modal" open>
-      <h2>Você {result}:</h2>
+    <dialog ref={dialog} className="result-modal">
+      {userLost && <h2>Você Perdeu!</h2>}
+      {!userLost && <h2>Você Parou o Desafio!</h2>}
       <p>
-        {" "}
-        O tempo algo estava <strong>{tempoAlvo} segundos.</strong>
+        O tempo alvo era <strong>{tempoAlvo} segundos.</strong>
       </p>
       <p>
-        {" "}
-        Você parou o tempo com <strong>X segundos a esquerda.</strong>
+        Você parou o tempo com <strong>{fomatarTempoCorrendo} segundos</strong> restantes.
       </p>
       <form method="dialog">
-        <button>Fechado</button>
+        <button>Fechar</button>
       </form>
     </dialog>
   );
 });
 
-export default ResultModal ;
+export default ResultModal;
