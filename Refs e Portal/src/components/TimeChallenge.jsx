@@ -1,69 +1,57 @@
-
-import { useState , useRef } from "react";
+import { useState, useRef } from "react";
 import ResultModal from "./ResultModal";
 
+export default function DesafioTempo({ tile, tempoAlvo }) {
+  const time = useRef();
+  const dialog = useRef();
 
+  // Estados
+  const [tempoRemaining, setTimeRemaining] = useState(tempoAlvo * 1000);
+  const [tempoComecar, setTempoComecar] = useState(false);
 
+  const timeIsActive = tempoRemaining > 0 && tempoRemaining < tempoAlvo * 1000;
 
-export default function DesafioTempo({tile ,tempoAlvo}){
-    const time = useRef();
-    const dialog = useRef();
+  function handleStart() {
+    setTempoComecar(true);
+    time.current = setInterval(() => {
+      setTimeRemaining((prevTime) => {
+        if (prevTime <= 10) {
+          clearInterval(time.current);
+          dialog.current?.open();
+          return 0; // Garante que o tempo não fique negativo
+        }
+        return prevTime - 10;
+      });
+    }, 10);
+  }
 
-    const [tempoRemaining , setTimeRemaining] = useState( tempoAlvo * 1000);
+  function handleStop() {
+    setTempoComecar(false);
+    clearInterval(time.current);
+    dialog.current?.open();
+  }
 
-    const timeisActive = tempoRemaining > 0 && tempoRemaining < tempoAlvo * 1000;
-
-    if(tempoRemaining <=0){
-        clearInterval(time.current);
-        setTimeRemaining(tempoAlvo * 1000);
-        dialog.current.open();
-    }
- 
-
-   
-
-    function handleStart(){
-        time.current = setInterval(() => {
-            SetTempoExpirado(true);
-            dialog.current?.open();
-            setTimeRemaining(prevTimeRemaining => prevTimeRemaining - 10);
-            
-        },10);
-    }
-
-
-    function handleStop(){
-        dialog.current.open();
-        clearInterval(time.current);
-    }
-
-
-
-
-    return(
+  return (
     <>
-    {TempoExpirado && < ResultModal ref={dialog} tempoAlvo={tempoAlvo} result= "Perdeu" />}
-    <section className="challenge">
+      <ResultModal
+        ref={dialog}
+        tempoAlvo={tempoAlvo}
+        remainingTime={tempoRemaining}
+      />
+      <section className="challenge">
         <h2>{tile}</h2>
-        {TempoExpirado && <p>Você Perdeu</p>}
         <p className="challenge-time">
-            {tempoAlvo} Segundos{tempoAlvo > 1 ? 'S' : ''}
-        </p>
-
-        <p>
-            <button onClick={ timeisActive ?handleStop : handleStart}> {tempoComecar ? 'Pare':'Começar'} 
-                começando Desafio
-            </button>
+          {tempoRemaining / 1000} Segundo{tempoRemaining / 1000 > 1 ? "s" : ""}
         </p>
         <p>
-            <button onClick={handleStart}> {tempoComecar ? 'Pare':'Começar'} 
-                começando Desafio
-            </button>
+          <button onClick={timeIsActive ? handleStop : handleStart}>
+            {tempoComecar ? "Parar" : "Começar"} Desafio
+          </button>
         </p>
-        <p className={timeisActive ? 'Ativo' : undefined}>
-            {tempoComecar ? 'Tempo está  rodando' :'Tempo Inativo'};
+        <p className={timeIsActive ? "Ativo" : undefined}>
+          {tempoComecar ? "Tempo está rodando" : "Tempo Inativo"}
         </p>
-    </section>
+      </section>
     </>
-    )
+  );
 }
