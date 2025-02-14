@@ -1,4 +1,4 @@
-import ProjectSideBar from "../Componetes/projetoSideBar";
+import ProjectSideBar from "./Componetes/projetoSideBar";
 
 function App() {
   return (
