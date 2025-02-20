@@ -5,6 +5,7 @@ import NoProjectSelecionado from "./Componetes/NoProjectSelecionado";
 import NovoProjeto from "./Componetes/NovoProjeto";
 import ProjectSideBar from "./Componetes/projetoSideBar";
 import { use } from "react";
+import ProjetosSelecionados from "./Componetes/ProjetosSelecionados";
 
 function App() {
 
@@ -12,6 +13,18 @@ function App() {
     selectedProjectId:undefined,
     projects: []
   });
+
+  function handleSelectProject(id){
+    setProjectState(prevState=>{
+      return{
+        ...prevState,
+        selectedProjectId : id,
+      }
+    })
+  }
+
+
+
 
   function handleStartAddProject(){
     setProjectState(prevState=>{
@@ -24,27 +37,37 @@ function App() {
 
   function handleAddProject(projectData){
     setProjectState(prevState=>{
+      const projectId = Math.random();
 
       const NovoProjeto = {
         ...projectData,
-        id: Math.random()
+        id: projectId,
       };
       return{
         ...prevState,
+        selectedProjectId:undefined,
         projects: [...prevState.projects,NovoProjeto]
       }
     })
   }
 
 
-  console.log(projectState);
+  function handleCancelAddProject(){
+    setProjectState(prevState=>{
+      return{
+        ...prevState,
+        selectedProjectId : undefined,
+      }
+    })
+  }
 
 
+const projetoSelecionado = projectState.projects.find(project => project.id === projectState.selectedProjectId )
 
-  let content;
+  let content = <ProjetosSelecionados project={projetoSelecionado} />;
 
   if(projectState.selectedProjectId === null){
-    content = <NovoProjeto onAdd={handleAddProject} />
+    content = <NovoProjeto onAdd={handleAddProject} onCancel={handleCancelAddProject} />
   } else if (projectState.selectedProjectId === undefined){
     content = <NoProjectSelecionado onStartAddProject={handleStartAddProject}/> ;
   }
@@ -53,7 +76,10 @@ function App() {
   return (
     <>
       <main className="h-screen my-8 flex gap-8">
-        <ProjectSideBar onStartAddProject={handleStartAddProject}  />
+        <ProjectSideBar onStartAddProject={handleStartAddProject} projects={projectState.projects}  
+        
+        onSelectProject={handleSelectProject}
+        />
 
         {content}
         
