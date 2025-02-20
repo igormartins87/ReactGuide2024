@@ -1,8 +1,9 @@
 import { useRef } from "react";
 import Input from "./Inputs";
+import Modal from "./Modal";
 
 export default function NovoProjeto({onAdd}) {
-
+  const modal = useRef();
   const tituloRef = useRef();
   const descricaoRef = useRef();
   const vencimetoRef = useRef();
@@ -11,6 +12,14 @@ export default function NovoProjeto({onAdd}) {
     const enteredTitulo = tituloRef.current.value;
     const enteredDescricao = descricaoRef.current.value;
     const enteredVencimento = vencimetoRef.current.value;
+
+
+    if(enteredTitulo.trim() ===''|| enteredDescricao.trim() === '' || enteredVencimento.trim() ===''){
+
+      modal.current.open();
+      return;
+
+    }
 
 
     onAdd({
@@ -22,6 +31,15 @@ export default function NovoProjeto({onAdd}) {
   }
 
   return (
+    <>
+
+    <Modal ref={modal} buttonCaption="ok">
+
+      <h2> Informação invalida</h2>
+      <p> Você esqueceu de preencher algum valor</p>
+      <p> Preencha com dados validos</p>
+
+    </Modal>
     <div className="w-[35rem] mt-16">
       <menu className="flex items-center justify-end gap-4 my-4">
         <li>
@@ -38,5 +56,6 @@ export default function NovoProjeto({onAdd}) {
         < Input  type="date"ref={vencimetoRef} label= "Vencimento"/>
       </div>
     </div>
+    </>
   );
 }
