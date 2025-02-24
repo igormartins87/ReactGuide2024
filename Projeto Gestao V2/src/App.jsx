@@ -11,8 +11,39 @@ function App() {
 
   const [projectState, setProjectState] = useState({
     selectedProjectId:undefined,
-    projects: []
+    projects: [],
+    tarefas: []
   });
+
+  function handleAddTarefas(text){
+    setProjectState(prevState=>{
+      const tarefaId = Math.random();
+
+      const newTask = {
+        text: text,
+        projectId:prevState.selectedProjectId,
+        id:tarefaId,
+      };
+      return{
+        ...prevState,
+        tarefas: [newTask,...prevState.tarefas]
+      }
+    })
+
+
+  }
+
+  function handeDeleteTarefas(id){
+    setProjectState(prevState=>{
+      return{
+        ...prevState,
+        selectedProjectId : undefined,
+        tarefas: prevState.tarefas.filter(
+          (tarefa)=>tarefa.id !== id),
+
+      }
+    })
+  }
 
   function handleSelectProject(id){
     setProjectState(prevState=>{
@@ -61,10 +92,23 @@ function App() {
     })
   }
 
+  function handleDeleteProject(){
+    setProjectState(prevState=>{
+      return{
+        ...prevState,
+        selectedProjectId : undefined,
+        projects: prevState.projects.filter(
+          (project)=>project.id !== prevState.selectedProjectId
+        ),
+
+      }
+    })
+  }
+
 
 const projetoSelecionado = projectState.projects.find(project => project.id === projectState.selectedProjectId )
 
-  let content = <ProjetosSelecionados project={projetoSelecionado} />;
+  let content = <ProjetosSelecionados project={projetoSelecionado} onDelete={handleDeleteProject} onAddTarefa={handleAddTarefas} onDeleteTarefa={handeDeleteTarefas} tarefas={projectState.tarefas} />;
 
   if(projectState.selectedProjectId === null){
     content = <NovoProjeto onAdd={handleAddProject} onCancel={handleCancelAddProject} />
@@ -79,6 +123,7 @@ const projetoSelecionado = projectState.projects.find(project => project.id === 
         <ProjectSideBar onStartAddProject={handleStartAddProject} projects={projectState.projects}  
         
         onSelectProject={handleSelectProject}
+        selectedProjectId={projectState.selectedProjectId}
         />
 
         {content}
