@@ -1,5 +1,12 @@
-export default function Cart({ items, onUpdateItemQuantity }) {
-  const totalPrice = items.reduce(
+import { use } from "react";
+
+import { CartContext } from "../Loja/shpping-cart-context";
+
+export default function Cart({ onUpdateItemQuantity }) {
+  if(true){
+   const CartCtx = use(CartContext);
+  }
+  const totalPrice = CartCtx.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
@@ -7,10 +14,10 @@ export default function Cart({ items, onUpdateItemQuantity }) {
 
   return (
     <div id="cart">
-      {items.length === 0 && <p>No items in cart!</p>}
-      {items.length > 0 && (
+      {CartCtx.length === 0 && <p>No items in cart!</p>}
+      {CartCtx.length > 0 && (
         <ul id="cart-items">
-          {items.map((item) => {
+          {CartCtx.map((item) => {
             const formattedPrice = `$${item.price.toFixed(2)}`;
 
             return (
