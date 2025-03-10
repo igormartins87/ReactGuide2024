@@ -1,12 +1,11 @@
-import { use } from "react";
+import { useContext } from "react";
 
 import { CartContext } from "../Loja/shpping-cart-context";
 
 export default function Cart({ onUpdateItemQuantity }) {
-  if(true){
-   const CartCtx = use(CartContext);
-  }
-  const totalPrice = CartCtx.reduce(
+  
+  const {items} = useContext(CartContext);
+  const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
@@ -14,10 +13,10 @@ export default function Cart({ onUpdateItemQuantity }) {
 
   return (
     <div id="cart">
-      {CartCtx.length === 0 && <p>No items in cart!</p>}
-      {CartCtx.length > 0 && (
+      {items.length === 0 && <p>No items in cart!</p>}
+      {items.length > 0 && (
         <ul id="cart-items">
-          {CartCtx.map((item) => {
+          {items.map((item) => {
             const formattedPrice = `$${item.price.toFixed(2)}`;
 
             return (
