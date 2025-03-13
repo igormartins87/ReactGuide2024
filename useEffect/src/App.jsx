@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import Places from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
@@ -11,17 +11,37 @@ import { sortPlacesByDistance } from './loc.js';
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
-  const [availablePlaces, setAvailablePlaces] useState([]);
+  const [availablePlaces, setAvailablePlaces] = useState([]);
   const [pickedPlaces, setPickedPlaces] = useState([]);
 
+  
+  useEffect(()=>{
+    const storedIds = JSON.parse(localStorage.getItem('lugaresSelecionados')) ||[];
 
-  navigator.geolocation.getCurrentPosition((position) =>{
-    const sortedPlace = sortPlacesByDistance(AVAILABLE_PLACES,
-      position.coords.latitude,
-      position.coords.longitude)
-  });
+  const storedPlaces = storedIds.map(id=> AVAILABLE_PLACES.find((place)=>place.id === id)
+  );
 
-  setAvailablePlaces(sortedPlace);
+  setPickedPlaces(storedPlaces);
+
+
+  }, [])
+  
+  
+  
+  
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const sortedPlace = sortPlacesByDistance(
+        AVAILABLE_PLACES,
+        position.coords.latitude,
+        position.coords.longitude
+      );
+
+      setAvailablePlaces(sortedPlace);
+    });
+  }, []);
+
+
 
 
   function handleStartRemovePlace(id) {
@@ -41,6 +61,15 @@ function App() {
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
       return [place, ...prevPickedPlaces];
     });
+
+    const storedIds = JSON.parse(localStorage.getItem('lugaresSelecionados')) ||[];
+
+    if(storedIds.indexOf(id) === -1){
+
+      localStorage.setItem('lugaresSelecionados',JSON.stringify([id,...storedIds]));
+
+    }
+    
   }
 
   function handleRemovePlace() {
@@ -48,6 +77,13 @@ function App() {
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
     modal.current.close();
+
+    const storedIds = JSON.parse(localStorage.getItem('lugaresSelecionados')) ||[];
+
+    localStorage.setItem('lugaresSelecionados' ,JSON.stringify(storedIds.filter(()=> id !== lugaresSelecionados.current )))
+
+
+
   }
 
   return (
@@ -77,6 +113,7 @@ function App() {
         <Places
           title="Available Places"
           places={AVAILABLE_PLACES}
+          fallbackText="Classificando por Distancia"
           onSelectPlace={handleSelectPlace}
         />
       </main>
