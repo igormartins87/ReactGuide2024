@@ -14,6 +14,21 @@ function App() {
   const [availablePlaces, setAvailablePlaces] = useState([]);
   const [pickedPlaces, setPickedPlaces] = useState([]);
 
+  
+  useEffect(()=>{
+    const storedIds = JSON.parse(localStorage.getItem('lugaresSelecionados')) ||[];
+
+  const storedPlaces = storedIds.map(id=> AVAILABLE_PLACES.find((place)=>place.id === id)
+  );
+
+  setPickedPlaces(storedPlaces);
+
+
+  }, [])
+  
+  
+  
+  
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       const sortedPlace = sortPlacesByDistance(
@@ -55,9 +70,6 @@ function App() {
 
     }
     
-    
-   
-
   }
 
   function handleRemovePlace() {
@@ -65,6 +77,13 @@ function App() {
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
     modal.current.close();
+
+    const storedIds = JSON.parse(localStorage.getItem('lugaresSelecionados')) ||[];
+
+    localStorage.setItem('lugaresSelecionados' ,JSON.stringify(storedIds.filter(()=> id !== lugaresSelecionados.current )))
+
+
+
   }
 
   return (
