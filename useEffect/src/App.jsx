@@ -68,18 +68,24 @@ function App() {
   }
 
   function handleRemovePlace() {
-    setPickedPlaces((prevPickedPlaces) =>
-      prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
-    );
     setModalIsOpen(false);
-
-    const storedIds = JSON.parse(localStorage.getItem('lugaresSelecionados')) ||[];
-
-    localStorage.setItem('lugaresSelecionados' ,JSON.stringify(storedIds.filter((id)=> id !== lugaresSelecionados.current )))
-
-
-
+  
+    setTimeout(() => {
+      setPickedPlaces((prevPickedPlaces) =>
+        prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
+      );
+  
+      const storedIds =
+        JSON.parse(localStorage.getItem('lugaresSelecionados')) || [];
+  
+      localStorage.setItem(
+        'lugaresSelecionados',
+        JSON.stringify(storedIds.filter((id) => id !== selectedPlace.current))
+      );
+    }, 3000);
   }
+
+
 
   return (
     <>
